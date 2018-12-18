@@ -1,7 +1,7 @@
 from bottle import route, run, request
 
 
-VERIFY_TOKEN = "1234567890987654321"
+VERIFY_TOKEN = "F64046127"
 
 
 @route("/webhook", method="GET")
