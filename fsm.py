@@ -1,6 +1,6 @@
 from transitions.extensions import GraphMachine
 
-from utils import send_text_message,send_image_url
+from utils import send_text_message,send_image_url,send_button_message
 from crawler import search,search_article,search_author,search_recommend
 
 key=''
@@ -46,6 +46,7 @@ class TocMachine(GraphMachine):
         print("I'm entering state2")
         sender_id = event['sender']['id']
         send_text_message(sender_id, "關鍵字查詢")
+        send_button_message(sender_id, "Test State2")
         #self.go_back()
 
     def on_exit_state2(self,event):

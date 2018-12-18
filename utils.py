@@ -28,26 +28,45 @@ def send_image_url(id, img_url):
        		 		"url":img_url, 
         			"is_reusable":True
       			}
-    		}
-    	}
-	}
-    response = requests.post(url, json=payload)
-
-    if response.status_code != 200:
-        print("Unable to send message: " + response.text)
-    return response
-"""
-def send_button_message(id, text, buttons):
-   url = "{0}/me/messages?access_token={1}".format(GRAPH_URL, ACCESS_TOKEN)
-    payload = {
-        "recipient": {"id": id},
-        "message": {"text": text},
-		"buttons": {"buttons": buttons}
+		    }
+        }
     }
     response = requests.post(url, json=payload)
 
     if response.status_code != 200:
         print("Unable to send message: " + response.text)
     return response
-"""
+
+def send_button_message(id, text):
+    url = "{0}/me/messages?access_token={1}".format(GRAPH_URL, ACCESS_TOKEN)
+    payload = {
+        "recipient": {"id": id},
+        "message":{
+            "attachment":{
+                "type":"template",
+                "payload":{
+                    "template_type":"button",
+                    "text":text,
+                    "buttons":[
+                        {
+                            "type":"web_url",
+                            "url":"https://www.facebook.com/",
+                            "title":"Visit Facebook"
+                        },
+                        {
+                            "type":"postback",
+                            "title":"go to state3",
+                            "payload":"state3"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+    response = requests.post(url, json=payload)
+
+    if response.status_code != 200:
+        print("Unable to send message: " + response.text)
+    return response
+
 
