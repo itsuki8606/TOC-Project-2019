@@ -22,6 +22,12 @@ class TocMachine(GraphMachine):
             return text.lower() == 'go to state2'
         return False
 
+    def is_going_to_state3(self, event):
+        if event.get("message"):
+            text = event['message']['text']
+            return text.lower() == 'go to state3'
+        return False
+
     def on_enter_state1(self, event):
         print("I'm entering state1")
         sender_id = event['sender']['id']
@@ -36,8 +42,17 @@ class TocMachine(GraphMachine):
         sender_id = event['sender']['id']
         send_text_message(sender_id, "請稍後")
         search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
-        send_text_message(sender_id, search(search_url,key))
+        send_text_message(sender_id, search(search_url,'問卦'))
+        #self.go_back()
+
+    def on_exit_state2(self, event):
+        print('Leaving state2')
+
+    def on_enter_state3(self, event):
+        print("I'm entering state3")
+        sender_id = event['sender']['id']
+        send_text_message(sender_id, "Hi State3")
         self.go_back()
 
-    def on_exit_state2(self):
-        print('Leaving state2')
+    def on_exit_state3(self):
+        print('Leaving state3')
