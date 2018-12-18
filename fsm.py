@@ -3,6 +3,8 @@ from transitions.extensions import GraphMachine
 from utils import send_text_message,send_image_url
 from crawler import search,search_article,search_author,search_recommend
 
+key=''
+
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
         self.machine = GraphMachine(
@@ -25,7 +27,10 @@ class TocMachine(GraphMachine):
     def is_going_to_state3(self, event):
         if event.get("message"):
             text = event['message']['text']
-            return text.lower() == 'go to state3'
+            global key
+            key = text
+            return True
+            #return text.lower() == 'go to state3'
         return False
 
     def on_enter_state1(self, event):
@@ -40,18 +45,18 @@ class TocMachine(GraphMachine):
     def on_enter_state2(self, event):
         print("I'm entering state2")
         sender_id = event['sender']['id']
-        send_text_message(sender_id, "請稍後")
-        search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
-        send_text_message(sender_id, search(search_url,'問卦'))
+        send_text_message(sender_id, "關鍵字查詢")
         #self.go_back()
 
-    def on_exit_state2(self, event):
+    def on_exit_state2(self,event):
         print('Leaving state2')
 
     def on_enter_state3(self, event):
         print("I'm entering state3")
         sender_id = event['sender']['id']
-        send_text_message(sender_id, "Hi State3")
+        send_text_message(sender_id, "請稍後")
+        search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
+        send_text_message(sender_id, search(search_url,key))
         self.go_back()
 
     def on_exit_state3(self):
