@@ -1,6 +1,7 @@
 from transitions.extensions import GraphMachine
 
 from utils import send_text_message,send_image_url
+from crawler import search,search_article,search_author,search_recommend
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -32,9 +33,10 @@ class TocMachine(GraphMachine):
 
     def on_enter_state2(self, event):
         print("I'm entering state2")
-
         sender_id = event['sender']['id']
-        send_text_message(sender_id, "Hi state2")
+        send_text_message(sender_id, "請稍後")
+        search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
+        send_text_message(sender_id, search(search_url,key))
         self.go_back()
 
     def on_exit_state2(self):

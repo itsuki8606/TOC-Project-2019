@@ -6,33 +6,30 @@ from multiprocessing import Pool
 import requests
 from requests_html import HTML
 
-from utils import pretty_print  # noqa
+from crawler_utils import pretty_print  # noqa
 
 
 def fetch(url):
-    ''' Step-1: send a request and fetch the web page.
-    '''
-    response = requests.get(url)
     response = requests.get(url, cookies={'over18': '1'})
     return response
 
-
 def parse_article_entries(doc):
-    ''' Step-2: parse the post entries on the source string.
-    '''
     html = HTML(html=doc)
     post_entries = html.find('div.r-ent')
     return post_entries
 
 
 def parse_article_meta(ent):
-    ''' Step-3: parse the metadata in article entry
-    '''
+	
     meta = {
         'title': ent.find('div.title', first=True).text,
-        'push': ent.find('div.nrec', first=True).text,
         'date': ent.find('div.date', first=True).text,
     }
+
+    if ent.find('div.nrec', first=True).text:
+        meta['push'] = ent.find('div.nrec', first=True).text
+    else:
+        meta['push'] = "0"
 
     try:
         meta['author'] = ent.find('div.author', first=True).text
@@ -50,12 +47,8 @@ def parse_article_meta(ent):
 
 
 def get_metadata_from(url):
-    ''' Step-4: parse the link of previous link.
-    '''
 
     def parse_next_link(doc):
-        ''' Step-4a: parse the link of previous link.
-        '''
         html = HTML(html=doc)
         controls = html.find('.action-bar a.btn.wide')
         link = controls[1].attrs.get('href')
@@ -70,8 +63,6 @@ def get_metadata_from(url):
 
 
 def get_paged_meta(url, num_pages):
-    ''' Step-4-ext: collect pages of metadata starting from url.
-    '''
     collected_meta = []
 
     for _ in range(num_pages):
@@ -81,20 +72,18 @@ def get_paged_meta(url, num_pages):
 
     return collected_meta
 
-
-def partA():
+"""
+def partA(key):
     resp = fetch(start_url)
     post_entries = parse_article_entries(resp.text)
     for entry in post_entries:
         meta = parse_article_meta(entry)
         pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
 
-
 def partB():
     metadata = get_paged_meta(start_url, num_pages=5)
     for meta in metadata:
         pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
-
 
 def partC():
 
@@ -116,15 +105,47 @@ def partC():
 
     print('共%d項結果：' % len(resps))
     for post, resps in zip(metadata, resps):
-        print('{0} {1: <15} {2}, 網頁內容共 {3} 字'.format(
-            post['date'], post['author'], post['title'], len(resps.text)))
+        print('{0:^3} {1} {2: <15} {3}, 網頁內容共 {4} 字'.format(
+            post['push'], post['date'], post['author'], post['title'], len(resps.text)))
+"""
 
+def search(url,key):
+    resp = requests.get(url, params={'q': key}, cookies={'over18': '1'})
+    post_entries = parse_article_entries(resp.text)
+    out = ""
+    for entry in post_entries:
+        meta = parse_article_meta(entry)
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+    return out
+
+def search_article(url,key):
+    resp = requests.get(url, params={'q': 'thread:'+str(key)}, cookies={'over18': '1'})
+    post_entries = parse_article_entries(resp.text)
+    for entry in post_entries:
+        meta = parse_article_meta(entry)
+        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
+
+def search_author(url,key):
+    resp = requests.get(url, params={'q': 'author:'+str(key)}, cookies={'over18': '1'})
+    post_entries = parse_article_entries(resp.text)
+    for entry in post_entries:
+        meta = parse_article_meta(entry)
+        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
+
+def search_recommend(url,key):
+    resp = requests.get(url, params={'q': 'recommend:'+str(key)}, cookies={'over18': '1'})
+    post_entries = parse_article_entries(resp.text)
+    for entry in post_entries:
+        meta = parse_article_meta(entry)
+        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
 
 domain = 'https://www.ptt.cc/'
-start_url = 'https://www.ptt.cc/bbs/movie/index.html'
+start_url = 'https://www.ptt.cc/bbs/Gossiping/index.html'
+search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
 
 
 if __name__ == '__main__':
-    partA()
-    partB()
-    partC()
+    search(search_url,'問卦')
+    #search_article(search_url,'[臉書] 林筱淇 12/18')
+    #search_author(search_url,'XXXXGAY')
+    #search_recommend(search_url,'100')
