@@ -108,6 +108,18 @@ def partC():
         print('{0:^3} {1} {2: <15} {3}, 網頁內容共 {4} 字'.format(
             post['push'], post['date'], post['author'], post['title'], len(resps.text)))
 """
+def list_all(url):
+    resp = requests.get(url, cookies={'over18': '1'})
+    post_entries = parse_article_entries(resp.text)
+    out = ""
+    for entry in post_entries:
+        meta = parse_article_meta(entry)
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+    if out:
+        return out
+    else:
+        out = '無相符搜尋結果'
+        return out
 
 def search(url,key):
     resp = requests.get(url, params={'q': key}, cookies={'over18': '1'})
@@ -116,36 +128,58 @@ def search(url,key):
     for entry in post_entries:
         meta = parse_article_meta(entry)
         out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
-    return out
+    if out:
+        return out
+    else:
+        out = '無相符搜尋結果'
+        return out
 
 def search_article(url,key):
     resp = requests.get(url, params={'q': 'thread:'+str(key)}, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
+    out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+    if out:
+        return out
+    else:
+        out = '無相符搜尋結果'
+        return out
 
 def search_author(url,key):
     resp = requests.get(url, params={'q': 'author:'+str(key)}, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
+    out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+    if out:
+        return out
+    else:
+        out = '無相符搜尋結果'
+        return out
 
-def search_recommend(url,key):
+def search_score(url,key):
     resp = requests.get(url, params={'q': 'recommend:'+str(key)}, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
+    out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+    if out:
+        return out
+    else:
+        out = '無相符搜尋結果'
+        return out
 
 domain = 'https://www.ptt.cc/'
 start_url = 'https://www.ptt.cc/bbs/Gossiping/index.html'
 search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
 
 
-if __name__ == '__main__':
-    search(search_url,'問卦')
+#if __name__ == '__main__':
+    #search(search_url,'問卦')
     #search_article(search_url,'[臉書] 林筱淇 12/18')
     #search_author(search_url,'XXXXGAY')
-    #search_recommend(search_url,'100')
+    #search_score(search_url,'100')

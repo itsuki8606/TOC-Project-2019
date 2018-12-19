@@ -23,7 +23,7 @@ def calc_len(string):
 
 
 def pretty_print(push, title, date, author):
-    pattern = '  %s\t%s%s%s\t%s'
+    pattern = '%3s\t%s%s%s\t%s'
     padding = ' ' * (50 - calc_len(title))
     #print(pattern % (push, title, padding, date, author))
     string = pattern % (push, title, padding, date, author)

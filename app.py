@@ -7,34 +7,88 @@ VERIFY_TOKEN = "F64046127"
 machine = TocMachine(
     states=[
         'user',
-        'state1',
-        'state2',
-        'state3'
+        'introduce',
+        'list_all',
+        'search',
+        'keyword_search',
+        'search_article',
+        'keyword_article',
+        'search_author',
+        'keyword_author',
+        'search_score',
+        'keyword_score'
     ],
     transitions=[
         {
             'trigger': 'advance',
             'source': 'user',
-            'dest': 'state1',
-            'conditions': 'is_going_to_state1'
+            'dest': 'introduce',
+            'conditions': 'is_going_to_introduce'
         },
         {
             'trigger': 'advance',
             'source': 'user',
-            'dest': 'state2',
-            'conditions': 'is_going_to_state2'
+            'dest': 'list_all',
+            'conditions': 'is_going_to_list_all'
         },
         {
             'trigger': 'advance',
-            'source': 'state2',
-            'dest': 'state3',
-            'conditions': 'is_going_to_state3'
+            'source': 'user',
+            'dest': 'search',
+            'conditions': 'is_going_to_search'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'search',
+            'dest': 'keyword_search',
+            'conditions': 'is_going_to_keyword_search'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'user',
+            'dest': 'search_article',
+            'conditions': 'is_going_to_search_article'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'search_article',
+            'dest': 'keyword_article',
+            'conditions': 'is_going_to_keyword_article'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'user',
+            'dest': 'search_author',
+            'conditions': 'is_going_to_search_author'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'search_author',
+            'dest': 'keyword_author',
+            'conditions': 'is_going_to_keyword_author'
+        },
+
+        {
+            'trigger': 'advance',
+            'source': 'user',
+            'dest': 'search_score',
+            'conditions': 'is_going_to_search_score'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'search_score',
+            'dest': 'keyword_score',
+            'conditions': 'is_going_to_keyword_score'
         },
         {
             'trigger': 'go_back',
             'source': [
-                'state1',
-                'state3'
+                'introduce',
+                'list_all',
+                'keyword_search',
+                'keyword_article',
+                'keyword_author',
+                'keyword_score'
             ],
             'dest': 'user'
         }
