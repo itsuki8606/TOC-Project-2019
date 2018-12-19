@@ -50,13 +50,13 @@ def send_button_message(id, text):
                     "buttons":[
                         {
                             "type":"web_url",
-                            "url":"https://www.facebook.com/",
-                            "title":"Visit Facebook"
+                            "url":"https://www.ptt.cc/bbs/index.html",
+                            "title":"前往PTT"
                         },
                         {
-                            "type":"postback",
-                            "title":"go to state3",
-                            "payload":"state3"
+                            "type":"web_url",
+                            "url":"https://github.com/itsuki8606/TOC-Project-2019",
+                            "title":"查看程式碼"
                         }
                     ]
                 }

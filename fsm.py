@@ -15,25 +15,25 @@ class TocMachine(GraphMachine):
         )
 
     def is_going_to_introduce(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             return text.lower() == 'intro'
         return False
 
     def is_going_to_list_all(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             return text.lower() == 'list all'
         return False
 
     def is_going_to_search(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             return text.lower() == 'search'
         return False
 
     def is_going_to_keyword_search(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             global key
             key = text
@@ -42,13 +42,13 @@ class TocMachine(GraphMachine):
         return False
 
     def is_going_to_search_article(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             return text.lower() == 'search article'
         return False
 
     def is_going_to_keyword_article(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             global key
             key = text
@@ -57,13 +57,13 @@ class TocMachine(GraphMachine):
         return False
 
     def is_going_to_search_author(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             return text.lower() == 'search author'
         return False
 
     def is_going_to_keyword_author(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             global key
             key = text
@@ -72,13 +72,13 @@ class TocMachine(GraphMachine):
         return False
 
     def is_going_to_search_score(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             return text.lower() == 'search score'
         return False
 
     def is_going_to_keyword_score(self, event):
-        if event.get("message"):
+        if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             global key
             key = text
@@ -89,8 +89,8 @@ class TocMachine(GraphMachine):
     def on_enter_introduce(self, event):
         print("I'm entering introduce")
         sender_id = event['sender']['id']
-        send_image_url(sender_id, "https://i.imgur.com/8bZQa3w.jpg")
-        send_button_message(sender_id, "查看簡介")
+        send_button_message(sender_id, "PTT查詢小幫手")
+        send_image_url(sender_id, "http://m.news.ptt.cc/images/PTT.png")
         self.go_back()
 
     def on_exit_introduce(self):

@@ -73,42 +73,6 @@ def get_paged_meta(url, num_pages):
 
     return collected_meta
 
-"""
-def partA(key):
-    resp = fetch(start_url)
-    post_entries = parse_article_entries(resp.text)
-    for entry in post_entries:
-        meta = parse_article_meta(entry)
-        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
-
-def partB():
-    metadata = get_paged_meta(start_url, num_pages=5)
-    for meta in metadata:
-        pretty_print(meta['push'], meta['title'], meta['date'], meta['author'])
-
-def partC():
-
-    def get_posts(metadata):
-        post_links = [
-            urllib.parse.urljoin(domain, meta['link'])
-            for meta in metadata if 'link' in meta]
-
-        with Pool(processes=8) as pool:
-            contents = pool.map(fetch, post_links)
-            return contents
-
-    start = time.time()
-
-    metadata = get_paged_meta(start_url, num_pages=2)
-    resps = get_posts(metadata)
-
-    print('花費: %f 秒' % (time.time() - start))
-
-    print('共%d項結果：' % len(resps))
-    for post, resps in zip(metadata, resps):
-        print('{0:^3} {1} {2: <15} {3}, 網頁內容共 {4} 字'.format(
-            post['push'], post['date'], post['author'], post['title'], len(resps.text)))
-"""
 def list_all(url):
     resp = requests.get(url, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
