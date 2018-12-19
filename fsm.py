@@ -2,9 +2,13 @@ from transitions.extensions import GraphMachine
 
 from utils import send_text_message,send_image_url,send_button_message
 from crawler import list_all,search,search_article,search_author,search_score
+from board import list_hot_board
 
-key=''
-start_url = 'https://www.ptt.cc/bbs/Gossiping/index.html'
+board_key = ''
+key = ''
+domain = 'https://www.ptt.cc/'
+start_url = 'https://www.ptt.cc/bbs/index.html'
+board_url = 'https://www.ptt.cc/bbs/Gossiping/index.html'
 search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
 
 class TocMachine(GraphMachine):
@@ -18,6 +22,21 @@ class TocMachine(GraphMachine):
         if event.get("message") and event['message'].get("text"):
             text = event['message']['text']
             return text.lower() == 'intro'
+        return False
+
+    def is_going_to_start(self, event):
+        if event.get("message") and event['message'].get("text"):
+            text = event['message']['text']
+            return text.lower() == 'start'
+        return False
+
+    def is_going_to_select_board(self, event):
+        if event.get("message") and event['message'].get("text"):
+            text = event['message']['text']
+            global board_key
+            board_key = text
+            return True
+            #return text.lower() == 'go to state3'
         return False
 
     def is_going_to_list_all(self, event):
@@ -96,11 +115,36 @@ class TocMachine(GraphMachine):
     def on_exit_introduce(self):
         print('Leaving introduce')
 
+    def on_enter_start(self, event):
+        print("I'm entering start")
+        sender_id = event['sender']['id']
+        send_text_message(sender_id, "顯示PTT熱門看板")
+        send_text_message(sender_id, list_hot_board(start_url))
+        send_text_message(sender_id, "請輸入欲進入之看板名稱")
+        #self.go_back()
+
+    def on_exit_start(self,event):
+        print('Leaving start')
+
+    def on_enter_select_board(self, event):
+        print("I'm entering select_board")
+        sender_id = event['sender']['id']
+        send_text_message(sender_id, "已進入"+ board_key +"板，請輸入指令搜尋")
+        global board_url
+        board_url = 'https://www.ptt.cc/bbs/' + board_key + '/index.html'
+        send_text_message(sender_id, list_all(board_url))
+        #self.go_back()
+
+    def on_exit_select_board(self,event):
+        print('Leaving start')
+
     def on_enter_list_all(self, event):
         print("I'm entering list_all")
         sender_id = event['sender']['id']
         send_text_message(sender_id, "搜尋中，請稍後...")
-        send_text_message(sender_id, list_all(start_url))
+        global board_url
+        board_url = 'https://www.ptt.cc/bbs/' + board_key + '/index.html'
+        send_text_message(sender_id, list_all(board_url))
         self.go_back()
 
     def on_exit_list_all(self):
@@ -121,6 +165,8 @@ class TocMachine(GraphMachine):
         print("I'm entering keyword_search")
         sender_id = event['sender']['id']
         send_text_message(sender_id, "搜尋中，請稍後...")
+        global search_url
+        search_url = 'https://www.ptt.cc/bbs/' + board_key + '/search'
         send_text_message(sender_id, search(search_url,key))
         self.go_back()
 
@@ -142,6 +188,8 @@ class TocMachine(GraphMachine):
         print("I'm entering keyword_article")
         sender_id = event['sender']['id']
         send_text_message(sender_id, "搜尋中，請稍後...")
+        global search_url
+        search_url = 'https://www.ptt.cc/bbs/' + board_key + '/search'
         send_text_message(sender_id, search_article(search_url,key))
         self.go_back()
 
@@ -163,6 +211,8 @@ class TocMachine(GraphMachine):
         print("I'm entering keyword_author")
         sender_id = event['sender']['id']
         send_text_message(sender_id, "搜尋中，請稍後...")
+        global search_url
+        search_url = 'https://www.ptt.cc/bbs/' + board_key + '/search'
         send_text_message(sender_id, search_author(search_url,key))
         self.go_back()
 
@@ -184,6 +234,8 @@ class TocMachine(GraphMachine):
         print("I'm entering keyword_score")
         sender_id = event['sender']['id']
         send_text_message(sender_id, "搜尋中，請稍後...")
+        global search_url
+        search_url = 'https://www.ptt.cc/bbs/' + board_key + '/search'
         send_text_message(sender_id, search_score(search_url,key))
         self.go_back()
 

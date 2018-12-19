@@ -46,33 +46,6 @@ def parse_article_meta(ent):
                 meta['author'] = match_author.group(1)
     return meta
 
-
-def get_metadata_from(url):
-
-    def parse_next_link(doc):
-        html = HTML(html=doc)
-        controls = html.find('.action-bar a.btn.wide')
-        link = controls[1].attrs.get('href')
-        return urllib.parse.urljoin(domain, link)
-
-    resp = fetch(url)
-    post_entries = parse_article_entries(resp.text)
-    next_link = parse_next_link(resp.text)
-
-    metadata = [parse_article_meta(entry) for entry in post_entries]
-    return metadata, next_link
-
-
-def get_paged_meta(url, num_pages):
-    collected_meta = []
-
-    for _ in range(num_pages):
-        posts, link = get_metadata_from(url)
-        collected_meta += posts
-        url = urllib.parse.urljoin(domain, link)
-
-    return collected_meta
-
 def list_all(url):
     resp = requests.get(url, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
@@ -138,13 +111,5 @@ def search_score(url,key):
         out = '無相符搜尋結果'
         return out
 
-domain = 'https://www.ptt.cc/'
-start_url = 'https://www.ptt.cc/bbs/Gossiping/index.html'
-search_url = 'https://www.ptt.cc/bbs/Gossiping/search'
 
 
-#if __name__ == '__main__':
-    #search(search_url,'問卦')
-    #search_article(search_url,'[臉書] 林筱淇 12/18')
-    #search_author(search_url,'XXXXGAY')
-    #search_score(search_url,'100')

@@ -8,6 +8,8 @@ machine = TocMachine(
     states=[
         'user',
         'introduce',
+        'start',
+        'select_board',
         'list_all',
         'search',
         'keyword_search',
@@ -28,12 +30,24 @@ machine = TocMachine(
         {
             'trigger': 'advance',
             'source': 'user',
+            'dest': 'start',
+            'conditions': 'is_going_to_start'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'start',
+            'dest': 'select_board',
+            'conditions': 'is_going_to_select_board'
+        },
+        {
+            'trigger': 'advance',
+            'source': 'select_board',
             'dest': 'list_all',
             'conditions': 'is_going_to_list_all'
         },
         {
             'trigger': 'advance',
-            'source': 'user',
+            'source': 'select_board',
             'dest': 'search',
             'conditions': 'is_going_to_search'
         },
@@ -45,7 +59,7 @@ machine = TocMachine(
         },
         {
             'trigger': 'advance',
-            'source': 'user',
+            'source': 'select_board',
             'dest': 'search_article',
             'conditions': 'is_going_to_search_article'
         },
@@ -57,7 +71,7 @@ machine = TocMachine(
         },
         {
             'trigger': 'advance',
-            'source': 'user',
+            'source': 'select_board',
             'dest': 'search_author',
             'conditions': 'is_going_to_search_author'
         },
@@ -70,7 +84,7 @@ machine = TocMachine(
 
         {
             'trigger': 'advance',
-            'source': 'user',
+            'source': 'select_board',
             'dest': 'search_score',
             'conditions': 'is_going_to_search_score'
         },

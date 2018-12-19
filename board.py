@@ -35,13 +35,18 @@ def parse_article_meta(ent):
     return meta
 
 def list_hot_board(url):
+    order = 0
     resp = requests.get(url, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
-    out = '看版人氣'.ljust(6) + '看板名稱'.center(8) + '看板描述'.center(10)+'\n'
+    #out = '看版人氣'.ljust(6) + '看板名稱'.center(8) + '看板描述'.center(10)+'\n'
+    out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
         string = meta['push'].center(6) + meta['name'].center(20) + meta['title'].ljust(30)
         out += string + '\n'
+        order = order + 1
+        if order >= 20:
+            break        
     if out:
         return out
     else:
@@ -52,8 +57,8 @@ domain = 'https://www.ptt.cc/'
 start_url = 'https://www.ptt.cc/bbs/index.html'
 
 
-if __name__ == '__main__':
-    list_hot_board(start_url)
+#if __name__ == '__main__':
+    #list_hot_board(start_url)
     #search_article(search_url,'[臉書] 林筱淇 12/18')
     #search_author(search_url,'XXXXGAY')
     #search_score(search_url,'100')
