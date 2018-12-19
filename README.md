@@ -87,9 +87,9 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 						* 列出相符文章資訊。
 				* Input: "search score"
 					* `search_score`
-					* Input: 推/噓文數 ( 推文為+ / 噓文為- )
+					* Input: 推/噓文數 ( 推文為正值 / 噓文為負值 )
 						* `keyword_score`
-						* 列出推/噓文數大於輸入值的文章資訊。
+						* 列出推/噓文數多於輸入值的文章資訊。
 
 
 ## Reference
