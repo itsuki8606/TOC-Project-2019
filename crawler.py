@@ -2,6 +2,7 @@ import re
 import time
 import urllib
 from multiprocessing import Pool
+from pyshorteners import Shortener
 
 import requests
 from requests_html import HTML
@@ -114,7 +115,7 @@ def list_all(url):
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
     if out:
         return out
     else:
@@ -127,7 +128,7 @@ def search(url,key):
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
     if out:
         return out
     else:
@@ -140,7 +141,7 @@ def search_article(url,key):
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
     if out:
         return out
     else:
@@ -153,7 +154,7 @@ def search_author(url,key):
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
     if out:
         return out
     else:
@@ -166,7 +167,7 @@ def search_score(url,key):
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
-        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author']) + '\n'
+        out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
     if out:
         return out
     else:

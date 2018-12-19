@@ -17,7 +17,7 @@ class TocMachine(GraphMachine):
     def is_going_to_introduce(self, event):
         if event.get("message"):
             text = event['message']['text']
-            return text.lower() == 'introduce'
+            return text.lower() == 'intro'
         return False
 
     def is_going_to_list_all(self, event):

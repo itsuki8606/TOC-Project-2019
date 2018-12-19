@@ -1,3 +1,4 @@
+from pyshorteners import Shortener
 widths = [
         (126,    1), (159,    0), (687,     1), (710,   0), (711,   1),
         (727,    0), (733,    1), (879,     0), (1154,  1), (1161,  0),
@@ -9,7 +10,7 @@ widths = [
         (120831, 1), (262141, 2), (1114109, 1),
 ]
 
-
+domain = 'https://www.ptt.cc'
 def calc_len(string):
     def chr_width(o):
         global widths
@@ -22,9 +23,17 @@ def calc_len(string):
     return sum(chr_width(ord(c)) for c in string)
 
 
-def pretty_print(push, title, date, author):
-    pattern = '%3s\t%s%s%s\t%s'
-    padding = ' ' * (50 - calc_len(title))
+def pretty_print(push, title, date, author, href):
+    try:
+        link = domain + href
+        s = Shortener('Tinyurl')
+        URL = s.short(link)
+        print(URL)
+    except:
+        URL = link
+        print(link)
+    pattern = '*%s*\n作者:%s\n推文數:%s\n日期:%s\n連結:\n%s\n'
+    #padding = ' ' * (50 - calc_len(title))
     #print(pattern % (push, title, padding, date, author))
-    string = pattern % (push, title, padding, date, author)
+    string = pattern % (title, author, push, date, URL)
     return string
