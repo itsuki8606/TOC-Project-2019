@@ -58,7 +58,7 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 		* 顯示PTT圖片
 
 	* Input: "intro"
-		* `intro`
+		* `introduce`
 		* 顯示指令介紹
 	
 	* Input: "start"
