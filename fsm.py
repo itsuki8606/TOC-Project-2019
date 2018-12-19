@@ -108,7 +108,10 @@ class TocMachine(GraphMachine):
     def on_enter_introduce(self, event):
         print("I'm entering introduce")
         sender_id = event['sender']['id']
-        send_button_message(sender_id, "PTT查詢小幫手")
+        send_button_message(sender_id, "*PTT查詢小幫手*\n可以使用此ChatBot將PTT的看板及貼文爬下來並且條件搜索。")
+        send_text_message(sender_id, "Step 1.\n可於初始介面輸入 *intro* (基本介紹)或者 *start* (開始)。")
+        send_text_message(sender_id, "Step 2.\nstart後進入PTT熱門看板首頁，此時請輸入「PTT看板名稱」(須完全正確)。")
+        send_text_message(sender_id, "Step 3.\n輸入看板名稱後即進入該看板，此時可輸入以下搜尋指令：。\n*list all*:直接列出第一頁所有文章資訊。\n*search*:開啟關鍵字搜尋，再輸入「關鍵字」後列出相符文章資訊。\n*search article*:開啟文章搜尋，再輸入「文章標題」(須完全正確)後列出相符文章資訊。\n*search author*:開啟作者搜尋，再輸入「作者帳號」後列出相符文章資訊。\n*search score*:開啟推文數搜尋，再輸入「推/噓文數」後列出推/噓文數大於輸入值的文章資訊。\n")
         send_image_url(sender_id, "http://m.news.ptt.cc/images/PTT.png")
         self.go_back()
 
