@@ -7,6 +7,7 @@ VERIFY_TOKEN = "F64046127"
 machine = TocMachine(
     states=[
         'user',
+        'about',
         'introduce',
         'start',
         'select_board',
@@ -21,6 +22,12 @@ machine = TocMachine(
         'keyword_score'
     ],
     transitions=[
+        {
+            'trigger': 'advance',
+            'source': 'user',
+            'dest': 'about',
+            'conditions': 'is_going_to_about'
+        },
         {
             'trigger': 'advance',
             'source': 'user',
@@ -97,6 +104,7 @@ machine = TocMachine(
         {
             'trigger': 'go_back',
             'source': [
+                'about',
                 'introduce',
                 'list_all',
                 'keyword_search',
