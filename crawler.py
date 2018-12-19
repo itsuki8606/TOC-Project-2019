@@ -47,12 +47,16 @@ def parse_article_meta(ent):
     return meta
 
 def list_all(url):
+    order = 0
     resp = requests.get(url, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
         out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
+        order = order + 1
+        if order >= 20:
+            break
     if out:
         return out
     else:
@@ -60,12 +64,16 @@ def list_all(url):
         return out
 
 def search(url,key):
+    order = 0
     resp = requests.get(url, params={'q': key}, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
         out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
+        order = order + 1
+        if order >= 20:
+            break
     if out:
         return out
     else:
@@ -73,12 +81,16 @@ def search(url,key):
         return out
 
 def search_article(url,key):
+    order = 0
     resp = requests.get(url, params={'q': 'thread:'+str(key)}, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
         out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
+        order = order + 1
+        if order >= 20:
+            break
     if out:
         return out
     else:
@@ -86,12 +98,16 @@ def search_article(url,key):
         return out
 
 def search_author(url,key):
+    order = 0
     resp = requests.get(url, params={'q': 'author:'+str(key)}, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
         out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
+        order = order + 1
+        if order >= 20:
+            break
     if out:
         return out
     else:
@@ -99,12 +115,16 @@ def search_author(url,key):
         return out
 
 def search_score(url,key):
+    order = 0
     resp = requests.get(url, params={'q': 'recommend:'+str(key)}, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
     out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
         out += pretty_print(meta['push'], meta['title'], meta['date'], meta['author'], meta['link']) + '\n'
+        order = order + 1
+        if order >= 20:
+            break
     if out:
         return out
     else:

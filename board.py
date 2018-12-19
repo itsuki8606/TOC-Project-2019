@@ -38,8 +38,8 @@ def list_hot_board(url):
     order = 0
     resp = requests.get(url, cookies={'over18': '1'})
     post_entries = parse_article_entries(resp.text)
-    #out = '看版人氣'.ljust(6) + '看板名稱'.center(8) + '看板描述'.center(10)+'\n'
-    out = ""
+    out = '看版人氣'.ljust(6) + '看板名稱'.center(8) + '\n'
+    #out = ""
     for entry in post_entries:
         meta = parse_article_meta(entry)
         string = meta['push'].center(6) + meta['name'].center(20) + meta['title'].ljust(30)

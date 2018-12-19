@@ -130,9 +130,6 @@ class TocMachine(GraphMachine):
         print("I'm entering select_board")
         sender_id = event['sender']['id']
         send_text_message(sender_id, "已進入"+ board_key +"板，請輸入指令搜尋")
-        global board_url
-        board_url = 'https://www.ptt.cc/bbs/' + board_key + '/index.html'
-        send_text_message(sender_id, list_all(board_url))
         #self.go_back()
 
     def on_exit_select_board(self,event):
