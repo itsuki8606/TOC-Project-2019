@@ -1,6 +1,6 @@
-# TOC Project 2019
+# PTT查詢小幫手
 
-Template Code for TOC Project 2019
+Chatbot of searching PTT for TOC Project 2019
 
 A Facebook messenger bot based on a finite state machine
 
@@ -44,19 +44,52 @@ python3 app.py
 ```
 
 ## Finite State Machine
-![fsm](./img/show-fsm.png)
+![fsm](./fsm.png)
 
 ## Usage
 The initial state is set to `user`.
 
 Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
 
-* user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
+* `user`
+	* Input: "about"
+		* `about`
+		* 顯示ChatBot簡介及URL按鈕
+		* 顯示PTT圖片
 
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
+	* Input: "intro"
+		* `intro`
+		* 顯示指令介紹
+	
+	* Input: "start"
+		* `start`
+		* 顯示PTT熱門看板
+		* Input: 看板名稱 (須完全正確)
+			* `select_board`
+			* 已進入該看板，輸入以下搜尋指令
+				* Input: "list all"
+					* `list_all`
+					* 直接列出第一頁所有文章資訊。
+				* Input: "search"
+					* `search`
+					* Input: 關鍵字
+						* `keyword_search`
+						* 列出相符文章資訊。
+				* Input: "search article"
+					* `search_article`
+					* Input: 文章標題 (須完全正確)
+						* `keyword_article`
+						* 列出相符文章資訊。
+				* Input: "search author"
+					* `search_author`
+					* Input: 作者名稱
+						* `keyword_author`
+						* 列出相符文章資訊。
+				* Input: "search score"
+					* `search_score`
+					* Input: 推/噓文數 ( 推文為+ / 噓文為- )
+						* `keyword_score`
+						* 列出推/噓文數大於輸入值的文章資訊。
 
 
 ## Reference
